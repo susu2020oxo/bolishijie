@@ -2,7 +2,24 @@
 
 当前环境 `/workspace/bolishijie`：Java 21.0.12.1、Gradle 8.14.3。仓库最初为空，本次新增完整模组工程。
 
-## 实际执行
+## 已公开发布的成品
+
+[GitHub Actions 首次成功构建](https://github.com/susu2020oxo/bolishijie/actions/runs/41775891873)于 2026 年 11 月 4 日完成 Java 编译、资源处理、JAR 重映射和服务端游戏测试：
+
+```text
+All 10 required tests passed :)
+BUILD SUCCESSFUL in 1m 17s
+```
+
+源码提交为 `b0a0166a92aff870d1ffcc263c4e54ac3dad0894`。构建产物已推送到公开 `downloads` 分支，并实际从公开直链下载，验证了模组 ID `bolishijie`、版本 `1.0.0` 和 ZIP 完整性。
+
+- [成品 JAR](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.0.jar)
+- [公开下载目录](https://github.com/susu2020oxo/bolishijie/tree/downloads)
+- [最近一次发布的构建记录](https://github.com/susu2020oxo/bolishijie/blob/downloads/build-status.txt)
+
+服务端自动测试通过不等同于完成了客户端画面和全维度长时间刷怪对比；这些手动验收项目仍见 TESTING.md。
+
+## 当前云环境的本地构建限制
 
 1. 官方 Gradle Wrapper 已下载，Gradle 发行包 SHA-256 为 `bd71102213493060956ec229d946beee57158dbd89d0e62b91bca0fa2c5f3531`，`./gradlew --version` 在配置代理后通过。
 2. `python3 tools/check_resources.py`：13 项测试通过。
@@ -14,7 +31,7 @@ HTTP/1.1 403 Forbidden:
 https://maven.fabricmc.net/fabric-loom/fabric-loom.gradle.plugin/1.13.6/fabric-loom.gradle.plugin-1.13.6.pom
 ```
 
-这不是成功构建，也不能证明 Java 接口、Mixin 或游戏运行已通过。9 项 GameTests 都尚未运行。
+以上为本地执行结果；之后已通过 GitHub Actions 完成编译与游戏测试，不再以本地失败判断公开成品的构建状态。
 
 ## 需要的额外网络域名
 

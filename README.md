@@ -2,6 +2,13 @@
 
 Minecraft **Java 版 1.21.10** 的 Fabric 模组，Java 21。客户端与服务器均需安装此模组和 Fabric API。
 
+## 下载
+
+- [下载成品模组 JAR](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.0.jar)
+- [下载页面与安装说明](https://github.com/susu2020oxo/bolishijie/tree/downloads)
+
+以上为公开地址，可分享给其他玩家。下载分支只在构建与服务端游戏测试成功后更新成品 JAR。
+
 ## 玩法
 
 - 主世界、下界、末地**新生成区块**中的石头、泥土、砂砾、冰、下界岩、灵魂沙、末地石等自然地形成为无色透明玻璃。
@@ -60,14 +67,16 @@ Windows 使用 `gradlew.bat build`。构建包含服务端 GameTests；测试运
 ./gradlew runClient
 ```
 
-项目自带 GitHub Actions。将项目提交到 GitHub 后，可从成功的 `Build Fabric 1.21.10 mod` 工作流的 `bolishijie-fabric-1.21.10` 附件中下载成品；这里没有代为提交或推送代码，也没有运行该远程工作流。
+项目已提交到 GitHub。`Build and publish Fabric 1.21.10 mod` 工作流在 `main` 更新时编译、运行测试，并自动发布到 `downloads` 分支。公开直链无需登录或查找 Actions 附件。
 
 ## 当前验证状态
 
 - 已通过 13 项离线资源检查：JSON、三维度地形覆盖、矿石/树木/流体排除、掉落、九种配方、配方解锁、物品模型、PNG 完整性、护甲资源、语言和修复材料。
 - 已安装并验证 Gradle 8.14.3（发行包 SHA-256 校验开启），Java 21 可用。
-- **构建尚未成功，未产出已验证的模组 JAR。** 当前云环境拒绝访问 `maven.fabricmc.net`，Gradle 在解析 Loom 插件时收到 HTTP 403。
-- 已编写 9 项真实 Minecraft GameTests，但受依赖下载限制，**尚未运行**。游戏内画面、跨区块生成和三维度实际刷怪尚未验证。
+- **GitHub Actions 已成功编译并生成模组 JAR**；[首次成功构建记录](https://github.com/susu2020oxo/bolishijie/actions/runs/41775891873)报告 `BUILD SUCCESSFUL`。
+- 本项目的 GameTests 已在真实 Minecraft 测试服务端执行，运行器报告 **10 项必需游戏测试全部通过**。
+- 已通过公开直链下载成品并验证 ZIP 完整性、模组 ID 与版本。游戏内画面、跨区块自然生成和三维度实际刷怪数量对比仍未手动验收。
+- 当前云环境的本地构建仍受 Fabric 网络限制；这不影响已在 GitHub 构建并公开发布的成品。
 
 离线检查与资源重新生成：
 

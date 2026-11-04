@@ -2,6 +2,8 @@
 
 ## 自动检查
 
+已执行结果：13 项离线资源检查通过；[GitHub Actions](https://github.com/susu2020oxo/bolishijie/actions/runs/41775891873) 已执行游戏测试，运行器报告 10 项必需测试全部通过。
+
 `python3 tools/check_resources.py` 可离线运行。它只校验资源合同，不能证明 Java 代码编译或游戏逻辑正确。
 
 `./gradlew build` 在 Loom/Fabric 开发环境中编译并运行服务端 GameTests：

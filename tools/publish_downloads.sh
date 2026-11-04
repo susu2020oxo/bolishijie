@@ -7,6 +7,7 @@ set -euo pipefail
 : "${RUNNER_TEMP:?}"
 jar_name=bolishijie-fabric-1.21.10-v1.0.0.jar
 source_name=bolishijie-source-v1.0.0.zip
+package_name=bolishijie-fabric-1.21.10-v1.0.0.zip
 result="${BUILD_RESULT:-not-run}"
 
 git archive --format=zip --output="$RUNNER_TEMP/$source_name" "$GITHUB_SHA"
@@ -48,7 +49,19 @@ git add -- "$source_name" build.log build-status.txt
 
 if [[ "$result" == success ]]; then
     cp "$RUNNER_TEMP/$jar_name" "$jar_name"
-    sha256sum "$jar_name" "$source_name" > SHA256SUMS.txt
+    python3 - <<'PY'
+from zipfile import ZipFile, ZIP_DEFLATED
+jar = 'bolishijie-fabric-1.21.10-v1.0.0.jar'
+with ZipFile('bolishijie-fabric-1.21.10-v1.0.0.zip', 'w', ZIP_DEFLATED) as bundle:
+    bundle.write(jar, 'mods/' + jar)
+    bundle.writestr('安装说明.txt',
+        '玻璃世界 Fabric 1.21.10\n'
+        '需要 Minecraft Java 1.21.10、Java 21、Fabric Loader 0.17.3+。\n'
+        '请另外安装适用于 1.21.10 的 Fabric API（本 ZIP 未包含 Fabric API）。\n'
+        '将 mods 文件夹中的 JAR 放进游戏的 mods 目录。客户端和服务端都需要安装。\n'
+        '新世界或尚未生成的区块才会生成玻璃地形，已有区块不会转换。\n')
+PY
+    sha256sum "$jar_name" "$package_name" "$source_name" > SHA256SUMS.txt
     cat > README.md <<'EOF'
 # 玻璃世界 · Fabric 1.21.10 下载
 
@@ -56,12 +69,13 @@ if [[ "$result" == success ]]; then
 将成品 JAR 与 Fabric API 放入客户端和服务端的 mods 文件夹。创建新世界以生成玻璃地形。
 
 - [下载模组 JAR](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.0.jar)
+- [下载 ZIP 安装包](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.0.zip)
 - [下载源码 ZIP](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-source-v1.0.0.zip)
 - [SHA-256](SHA256SUMS.txt)
 
 源码 ZIP 不是成品模组。此目录仅在构建与服务端自动测试成功后更新 JAR。
 EOF
-    git add -- "$jar_name" SHA256SUMS.txt README.md
+    git add -- "$jar_name" "$package_name" SHA256SUMS.txt README.md
 fi
 
 if ! git diff --cached --quiet; then
