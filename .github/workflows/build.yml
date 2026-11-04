@@ -28,8 +28,16 @@ jobs:
         run: |
           set -o pipefail
           ./gradlew build --no-daemon 2>&1 | tee "$RUNNER_TEMP/bolishijie-build.log"
-      - uses: actions/upload-artifact@v4
+      - name: Create and reload ordinary worlds with production JAR
+        id: worlds
         if: steps.compile.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 tools/smoke_worlds.py 2>&1 | tee -a "$RUNNER_TEMP/bolishijie-build.log"
+      - uses: actions/upload-artifact@v4
+        if: steps.compile.outcome == 'success' && steps.worlds.outcome == 'success'
         with:
           name: bolishijie-fabric-1.21.10
           path: build/libs/bolishijie-1.0.0.jar
@@ -46,10 +54,10 @@ jobs:
       - name: Publish downloads and build status
         if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         env:
-          BUILD_RESULT: ${{ steps.compile.outcome }}
+          BUILD_RESULT: ${{ steps.compile.outcome == 'success' && steps.worlds.outcome == 'success' && 'success' || 'failure' }}
         run: |
           cp tools/publish_downloads.sh "$RUNNER_TEMP/publish_downloads.sh"
           bash "$RUNNER_TEMP/publish_downloads.sh"
       - name: Require successful build
-        if: steps.compile.outcome != 'success'
+        if: steps.compile.outcome != 'success' || steps.worlds.outcome != 'success'
         run: exit 1
