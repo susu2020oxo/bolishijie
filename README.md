@@ -4,10 +4,12 @@ Minecraft **Java 版 1.21.10** 的 Fabric 模组，Java 21。客户端与服务�
 
 ## 下载
 
-- [下载成品模组 JAR](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.0.jar)
+- [下载成品模组 JAR · 1.0.1](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.1.jar)
 - [下载页面与安装说明](https://github.com/susu2020oxo/bolishijie/tree/downloads)
 
 以上为公开地址，可分享给其他玩家。下载分支只在构建与服务端游戏测试成功后更新成品 JAR。
+
+**1.0.0 存在普通世界加载崩溃，请移除旧版并替换为 1.0.1，不要同时安装两版。** 1.0.1 补齐结构保护读取区块所需的生成依赖，修复 `Requested chunk unavailable during world generation`；保留原方块注册名，已有存档无需删除。
 
 ## 玩法
 
@@ -47,7 +49,7 @@ Minecraft **Java 版 1.21.10** 的 Fabric 模组，Java 21。客户端与服务�
 
 ## 安装与构建
 
-构建后的文件应为 `build/libs/bolishijie-1.0.0.jar`。**源码 ZIP、`-sources.jar` 和 `-dev.jar` 不能作为成品模组放入 mods。**
+构建后的文件应为 `build/libs/bolishijie-1.0.1.jar`。**源码 ZIP、`-sources.jar` 和 `-dev.jar` 不能作为成品模组放入 mods。**
 
 1. 安装 Minecraft Java 1.21.10 和 Fabric Loader 0.17.3 或更高版本。
 2. 将本模组的成品 JAR 与适用于 **1.21.10** 的 Fabric API 放入 `mods` 文件夹。多人游戏的服务端也需安装两者。
@@ -77,6 +79,8 @@ Windows 使用 `gradlew.bat build`。构建包含服务端 GameTests；测试运
 - 本项目的 GameTests 已在真实 Minecraft 测试服务端执行，运行器报告 **10 项必需游戏测试全部通过**。
 - 已通过公开直链下载成品并验证 ZIP 完整性、模组 ID 与版本。游戏内画面、跨区块自然生成和三维度实际刷怪数量对比仍未手动验收。
 - 当前云环境的本地构建仍受 Fabric 网络限制；这不影响已在 GitHub 构建并公开发布的成品。
+
+1.0.1 增加了生成依赖回归测试，并把成品 JAR 创建新世界、保存重载，以及安装到预先生成的旧存档列为发布前的必需检查。请以 [downloads/build-status.txt](https://github.com/susu2020oxo/bolishijie/blob/downloads/build-status.txt) 和对应构建日志确认最新结果；原 1.0.0 的测试通过记录不代表普通世界加载正常。
 
 离线检查与资源重新生成：
 

@@ -2,6 +2,8 @@
 
 ## 自动检查
 
+1.0.1 起，`tools/smoke_worlds.py` 使用 Fabric 官方生产服务器启动器及重映射后的成品 JAR，依次验证：新建三维度、保存退出后重载、未安装本模组时创建原版存档，再安装模组加载该旧存档并生成新地形。检查实际方块状态，既有原版区块必须保持原样。任何一步失败都不得更新成品下载。
+
 已执行结果：13 项离线资源检查通过；[GitHub Actions](https://github.com/susu2020oxo/bolishijie/actions/runs/41775891873) 已执行游戏测试，运行器报告 10 项必需测试全部通过。
 
 `python3 tools/check_resources.py` 可离线运行。它只校验资源合同，不能证明 Java 代码编译或游戏逻辑正确。

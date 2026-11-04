@@ -104,13 +104,13 @@ def session(label, password, world_name="smoke-world", with_mod=True, converted=
             if 'Unknown' in response or 'Incorrect' in response:
                 raise RuntimeError("Failed to load " + dimension)
             deadline = time.monotonic() + 90
-            marker = "GLASS_WORLD_READY"
+            marker = "Test passed"
             block = f"bolishijie:terrain/{source}" if glass else f"minecraft:{source}"
             x = offset + 8
             heights = [40, 45, 50, 55, 60] if source == "end_stone" else [y]
             while True:
                 responses = [rcon.request(2, f"execute in {dimension} if loaded {x} {height} {x} "
-                                           f"if block {x} {height} {x} {block} run say {marker}")
+                                           f"if block {x} {height} {x} {block}")
                              for height in heights]
                 if any(marker in response for response in responses):
                     print(f"[WORLD-SMOKE] {label}: {dimension} at {x},{x} verified {block}", flush=True)
