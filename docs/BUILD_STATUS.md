@@ -2,7 +2,7 @@
 
 ## 1.0.1 世界加载修复
 
-已使用真实成品服务器复现 1.0.0 的普通世界生成崩溃：[复现构建](https://github.com/susu2020oxo/bolishijie/actions/runs/41782598821)。结构保护读取的结构起点可能位于八个区块之外，而原 SPAWN 生成步骤只允许读取中心 LIGHT 和相邻 BIOMES，导致 `Requested chunk unavailable during world generation`。
+已使用真实成品服务器复现 1.0.0 的普通世界生成崩溃：[复现构建](https://github.com/susu2020oxo/bolishijie/actions/runs/41782598821)。结构保护需要读取最多相距八个区块的结构起点，而原 SPAWN 生成步骤只允许读取中心 LIGHT 和相邻 BIOMES，导致 `Requested chunk unavailable during world generation`。
 
 1.0.1 仅在 GENERATION 的 SPAWN 步骤补齐 `STRUCTURE_STARTS/8` 和 `FEATURES/1` 依赖，保留原版 LOADING 路径及既有区块。新测试验证读取依赖和旧存档加载依赖保持分离；[初次修复构建](https://github.com/susu2020oxo/bolishijie/actions/runs/41783053272) 中 11 项必需 GameTests 通过。发布另须经过真实成品的新建、重载和原版旧存档安装检查，具体结果见下载分支构建记录。
 

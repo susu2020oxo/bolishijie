@@ -109,8 +109,13 @@ def session(label, password, world_name="smoke-world", with_mod=True, converted=
             x = offset + 8
             heights = [40, 45, 50, 55, 60] if source == "end_stone" else [y]
             while True:
+                # Source identity compatibility makes glass also match a vanilla
+                # block predicate. Explicitly exclude the glass variant when
+                # verifying that existing vanilla chunks were not converted.
                 responses = [rcon.request(2, f"execute in {dimension} if loaded {x} {height} {x} "
-                                           f"if block {x} {height} {x} {block}")
+                                           + (f"unless block {x} {height} {x} bolishijie:terrain/{source} "
+                                              if with_mod and not glass else "")
+                                           + f"if block {x} {height} {x} {block}")
                              for height in heights]
                 if any(marker in response for response in responses):
                     print(f"[WORLD-SMOKE] {label}: {dimension} at {x},{x} verified {block}", flush=True)
