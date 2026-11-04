@@ -44,7 +44,7 @@ public final class GlassTerrainGenerator {
         ChunkSection[] sections = chunk.getSectionArray();
         // Desert wells and monster rooms are also features. Include neighboring
         // feature markers, so crossing a chunk boundary cannot cut a well in half.
-        // The completed lighting stage has initialized its neighboring chunks.
+        // The explicit FEATURES/1 dependency makes these reads legal and complete.
         for (int x = startX - 4; x < startX + 20; x++) {
             for (int z = startZ - 4; z < startZ + 20; z++) {
                 for (int y = chunk.getBottomY(); y < chunk.getBottomY() + chunk.getHeight(); y++) {

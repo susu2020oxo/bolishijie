@@ -20,11 +20,26 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.chunk.ChunkGenerationSteps;
+import net.minecraft.world.chunk.ChunkStatus;
 
 import java.util.List;
 
 /** These require the real Minecraft registries, Mixin and loaded data packs. */
 public final class GlassWorldGameTests {
+    @GameTest
+    public void generationDeclaresStructureAndNeighborReads(TestContext context) {
+        var spawn = ChunkGenerationSteps.GENERATION.get(ChunkStatus.SPAWN);
+        check(context, spawn.getAdditionalLevel(ChunkStatus.STRUCTURE_STARTS) >= 8,
+                "Structure protection must have a legal eight-chunk structure-start dependency");
+        check(context, spawn.getAdditionalLevel(ChunkStatus.FEATURES) >= 1,
+                "Neighbor feature markers must be complete and accessible before conversion");
+        var loading = ChunkGenerationSteps.LOADING.get(ChunkStatus.SPAWN);
+        check(context, loading.getAdditionalLevel(ChunkStatus.STRUCTURE_STARTS) < 8,
+                "Loading an existing world must not add generation dependencies");
+        context.complete();
+    }
+
     @GameTest
     public void allThreeDimensionsHaveGlassTerrain(TestContext context) {
         for (Block source : List.of(Blocks.STONE, Blocks.GRASS_BLOCK, Blocks.NETHERRACK,

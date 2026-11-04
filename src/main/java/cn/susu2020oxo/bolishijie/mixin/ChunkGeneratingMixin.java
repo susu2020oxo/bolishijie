@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Mixin(ChunkGenerating.class)
 abstract class ChunkGeneratingMixin {
-    // The LIGHT dependency waits for neighboring feature writers to finish.
+    // ChunkGenerationStepsMixin explicitly declares structure and feature reads.
     // Convert just before initial entity population, retaining the already-computed
     // light by preserving source opacity/emission. Never scan old loaded chunks.
     @SuppressWarnings({"rawtypes", "unchecked"})
