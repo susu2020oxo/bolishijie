@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "bolishijie",
+  "version": "${version}",
+  "name": "玻璃世界 · Glass World",
+  "description": "三维度玻璃地形，保留树木、建筑、矿石、流体及原地形的刷怪条件。",
+  "authors": ["susu2020oxo"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["cn.susu2020oxo.bolishijie.GlassWorld"],
+    "client": ["cn.susu2020oxo.bolishijie.client.GlassWorldClient"]
+  },
+  "mixins": ["bolishijie.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.17.3",
+    "minecraft": "1.21.10",
+    "java": ">=21",
+    "fabric-api": ">=0.138.4+1.21.10"
+  }
+}

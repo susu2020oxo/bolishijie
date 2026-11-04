@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "bolishijie:glass"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "bolishijie:glass"
+      }
+    ]
+  }
+}

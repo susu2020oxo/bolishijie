@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "bolishijie-test",
+  "version": "1.0.0",
+  "name": "Glass World integration tests",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": ["cn.susu2020oxo.bolishijie.GlassWorldGameTests"]
+  },
+  "depends": { "bolishijie": "*", "fabric-gametest-api-v1": "*" }
+}

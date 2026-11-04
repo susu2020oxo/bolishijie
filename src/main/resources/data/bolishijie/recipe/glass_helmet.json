@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": "minecraft:glass"
+  },
+  "pattern": [
+    "GGG",
+    "G G"
+  ],
+  "result": {
+    "id": "bolishijie:glass_helmet",
+    "count": 1
+  }
+}

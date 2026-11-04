@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": "minecraft:glass",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "GG",
+    " S",
+    " S"
+  ],
+  "result": {
+    "id": "bolishijie:glass_hoe",
+    "count": 1
+  }
+}

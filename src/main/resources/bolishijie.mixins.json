@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "cn.susu2020oxo.bolishijie.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": ["ChunkGeneratingMixin", "TerrainIdentityMixin", "GroundToolMixin"],
+  "injectors": { "defaultRequire": 1 }
+}

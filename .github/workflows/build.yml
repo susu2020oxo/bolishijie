@@ -1,0 +1,55 @@
+name: Build and publish Fabric 1.21.10 mod
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Validate resources
+        run: python3 tools/check_resources.py
+      - name: Compile and run server GameTests
+        id: compile
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew build --no-daemon 2>&1 | tee "$RUNNER_TEMP/bolishijie-build.log"
+      - uses: actions/upload-artifact@v4
+        if: steps.compile.outcome == 'success'
+        with:
+          name: bolishijie-fabric-1.21.10
+          path: build/libs/bolishijie-1.0.0.jar
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: failure() || steps.compile.outcome == 'failure'
+        with:
+          name: test-logs
+          path: |
+            build/reports/
+            build/test-results/
+            build/gametest/
+            run/logs/
+      - name: Publish downloads and build status
+        if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          BUILD_RESULT: ${{ steps.compile.outcome }}
+        run: |
+          cp tools/publish_downloads.sh "$RUNNER_TEMP/publish_downloads.sh"
+          bash "$RUNNER_TEMP/publish_downloads.sh"
+      - name: Require successful build
+        if: steps.compile.outcome != 'success'
+        run: exit 1
