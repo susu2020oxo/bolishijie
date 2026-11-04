@@ -1,3 +1,3 @@
-3c6c4b288dd2416eadbd4281fd5c315a7ef8bc05d24610bf2815201376710f67  bolishijie-fabric-1.21.10-v1.0.0.jar
-1c1b471ee06cb546d16885a5ca4df77a45a5df8f9dbceb4aaa1e4274628f6064  bolishijie-fabric-1.21.10-v1.0.0.zip
-1c2792669f1729d0bafa5176f93fcd366c32b3e8fa2a4143e2d29b7c79849e2a  bolishijie-source-v1.0.0.zip
+8390e455149f9bd9f6c4ff650712ceabcc47818ffa282afcf4bac3bf0a0fc04b  bolishijie-fabric-1.21.10-v1.0.1.jar
+c451f5ccf7f20ff29e2de7403bd522d1a5417442f26803c6539f34da13858355  bolishijie-fabric-1.21.10-v1.0.1.zip
+a5f2d9e8511a4ea9fee7617f374b0b72d6cc377fb6299af03713524fcafa7048  bolishijie-source-v1.0.1.zip

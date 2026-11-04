@@ -3,9 +3,11 @@
 需要 Minecraft Java 1.21.10、Java 21、Fabric Loader 0.17.3+，以及对应 1.21.10 的 Fabric API。
 将成品 JAR 与 Fabric API 放入客户端和服务端的 mods 文件夹。创建新世界以生成玻璃地形。
 
-- [下载模组 JAR](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.0.jar)
-- [下载 ZIP 安装包](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.0.zip)
-- [下载源码 ZIP](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-source-v1.0.0.zip)
+- [下载模组 JAR](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.1.jar)
+- [下载 ZIP 安装包](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.1.zip)
+- [下载源码 ZIP](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-source-v1.0.1.zip)
 - [SHA-256](SHA256SUMS.txt)
 
 源码 ZIP 不是成品模组。此目录仅在构建与服务端自动测试成功后更新 JAR。
+
+1.0.0 存在普通世界生成越界问题，请替换为 1.0.1 或更新版本，不要同时安装两版。
