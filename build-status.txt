@@ -1,3 +1,3 @@
-commit=073db167cb4cb4c7a4ade8257b65976bacb3a661
+commit=9562acc977c942726fb492c961bd2e63767acaa1
 result=failure
-run=https://github.com/susu2020oxo/bolishijie/actions/runs/41782366598
+run=https://github.com/susu2020oxo/bolishijie/actions/runs/41782598821
