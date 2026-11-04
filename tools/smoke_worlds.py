@@ -105,7 +105,7 @@ def session(label, password, world_name="smoke-world", with_mod=True, converted=
                 raise RuntimeError("Failed to load " + dimension)
             deadline = time.monotonic() + 90
             marker = "Test passed"
-            block = f"bolishijie:terrain/{source}" if glass else f"minecraft:{source}"
+            block = (f"bolishijie:terrain/{source}" if glass else f"minecraft:{source}") if source else None
             x = offset + 8
             heights = [40, 45, 50, 55, 60] if source == "end_stone" else [y]
             while True:
@@ -115,10 +115,10 @@ def session(label, password, world_name="smoke-world", with_mod=True, converted=
                 responses = [rcon.request(2, f"execute in {dimension} if loaded {x} {height} {x} "
                                            + (f"unless block {x} {height} {x} bolishijie:terrain/{source} "
                                               if with_mod and not glass else "")
-                                           + f"if block {x} {height} {x} {block}")
+                                           + (f"if block {x} {height} {x} {block}" if block else ""))
                              for height in heights]
                 if any(marker in response for response in responses):
-                    print(f"[WORLD-SMOKE] {label}: {dimension} at {x},{x} verified {block}", flush=True)
+                    print(f"[WORLD-SMOKE] {label}: {dimension} at {x},{x} verified {block or 'new FULL chunk'}", flush=True)
                     break
                 if time.monotonic() > deadline:
                     raise RuntimeError(f"{label}: expected terrain {block} not loaded in {dimension}: {responses}")
@@ -126,7 +126,11 @@ def session(label, password, world_name="smoke-world", with_mod=True, converted=
         for dimension, y, source in dimensions:
             check_dimension(dimension, y, source, 0, converted)
             if expand:
-                check_dimension(dimension, y, source, 32, True)
+                # Existing vanilla spawn/ticking tickets generated well beyond
+                # the original four chunks. Go far away to test NEW terrain.
+                # End terrain here can legitimately be void: assert FULL loading;
+                # actual End glass was already checked in create/reload above.
+                check_dimension(dimension, y, None if source == "end_stone" else source, 1024, True)
         rcon.command("save-all flush")
         rcon.request(2, "stop")
         rcon.socket.close()

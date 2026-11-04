@@ -80,6 +80,7 @@ spawn-chunk-radius=1
 view-distance=2
 simulation-distance=2
 max-tick-time=60000
+pause-when-empty-seconds=0
 """
     }
 }
