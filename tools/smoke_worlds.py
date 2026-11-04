@@ -104,7 +104,7 @@ def session(label, password, world_name="smoke-world", with_mod=True, converted=
             if 'Unknown' in response or 'Incorrect' in response:
                 raise RuntimeError("Failed to load " + dimension)
             deadline = time.monotonic() + 90
-            marker = "Test passed"
+            marker = "Test passed" if source else "The time is"
             block = (f"bolishijie:terrain/{source}" if glass else f"minecraft:{source}") if source else None
             x = offset + 8
             heights = [40, 45, 50, 55, 60] if source == "end_stone" else [y]
@@ -115,7 +115,7 @@ def session(label, password, world_name="smoke-world", with_mod=True, converted=
                 responses = [rcon.request(2, f"execute in {dimension} if loaded {x} {height} {x} "
                                            + (f"unless block {x} {height} {x} bolishijie:terrain/{source} "
                                               if with_mod and not glass else "")
-                                           + (f"if block {x} {height} {x} {block}" if block else ""))
+                                           + (f"if block {x} {height} {x} {block}" if block else "run time query gametime"))
                              for height in heights]
                 if any(marker in response for response in responses):
                     print(f"[WORLD-SMOKE] {label}: {dimension} at {x},{x} verified {block or 'new FULL chunk'}", flush=True)
