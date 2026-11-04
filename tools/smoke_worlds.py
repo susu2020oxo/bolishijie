@@ -58,7 +58,8 @@ def session(label, password):
     command = [str(ROOT / "gradlew"), "runProductionSmokeServer", "--no-daemon", "--console=plain"]
     process = subprocess.Popen(command, cwd=ROOT, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT, text=True, bufsize=1,
-                               start_new_session=True)
+                               start_new_session=True,
+                               env={**os.environ, "BOLISHIJIE_SMOKE_RCON_PASSWORD": password})
     lines = queue.Queue()
 
     def collect():

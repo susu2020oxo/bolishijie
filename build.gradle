@@ -56,4 +56,26 @@ tasks.register('runProductionSmokeServer', net.fabricmc.loom.task.prod.ServerPro
     installerVersion = '1.0.1'
     runDir = layout.buildDirectory.dir('production-smoke')
     jvmArgs.addAll('-Xms512M', '-Xmx2G')
+    doNotTrackState('A live server must run every time and retain its saved world between sessions')
+    doFirst {
+        def directory = runDir.get().asFile
+        directory.mkdirs()
+        def password = System.getenv('BOLISHIJIE_SMOKE_RCON_PASSWORD')
+        if (!password) { throw new GradleException('Run this task through tools/smoke_worlds.py') }
+        new File(directory, 'eula.txt').text = 'eula=true\n'
+        new File(directory, 'server.properties').text = """server-ip=127.0.0.1
+server-port=25577
+online-mode=false
+enable-rcon=true
+rcon.port=25578
+rcon.password=${password}
+level-name=smoke-world
+level-seed=20261010
+level-type=minecraft:normal
+spawn-chunk-radius=1
+view-distance=2
+simulation-distance=2
+max-tick-time=60000
+"""
+    }
 }
