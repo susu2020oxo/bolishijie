@@ -4,6 +4,7 @@
 将成品 JAR 与 Fabric API 放入客户端和服务端的 mods 文件夹。创建新世界以生成玻璃地形。
 
 - [下载模组 JAR](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.0.jar)
+- [下载 ZIP 安装包](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-fabric-1.21.10-v1.0.0.zip)
 - [下载源码 ZIP](https://github.com/susu2020oxo/bolishijie/raw/refs/heads/downloads/bolishijie-source-v1.0.0.zip)
 - [SHA-256](SHA256SUMS.txt)
 
