@@ -19,7 +19,15 @@ RUN = ROOT / "build/production-smoke"
 
 class Rcon:
     def __init__(self, password):
-        self.socket = socket.create_connection(("127.0.0.1", 25578), timeout=15)
+        deadline = time.monotonic() + 15
+        while True:
+            try:
+                self.socket = socket.create_connection(("127.0.0.1", 25578), timeout=5)
+                break
+            except ConnectionRefusedError:
+                if time.monotonic() >= deadline:
+                    raise
+                time.sleep(0.2)
         self.socket.settimeout(30)
         self.id = 0
         self.request(3, password)
@@ -54,12 +62,14 @@ class Rcon:
         return response
 
 
-def session(label, password):
+def session(label, password, world_name="smoke-world", with_mod=True, converted=True, expand=False):
     command = [str(ROOT / "gradlew"), "runProductionSmokeServer", "--no-daemon", "--console=plain"]
     process = subprocess.Popen(command, cwd=ROOT, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT, text=True, bufsize=1,
                                start_new_session=True,
-                               env={**os.environ, "BOLISHIJIE_SMOKE_RCON_PASSWORD": password})
+                               env={**os.environ, "BOLISHIJIE_SMOKE_RCON_PASSWORD": password,
+                                    "BOLISHIJIE_SMOKE_LEVEL_NAME": world_name,
+                                    "BOLISHIJIE_SMOKE_DISABLE_MOD": "0" if with_mod else "1"})
     lines = queue.Queue()
 
     def collect():
@@ -88,21 +98,30 @@ def session(label, password):
             ("minecraft:the_nether", 0, "bedrock"),
             ("minecraft:the_end", 50, "end_stone"),
         ]
-        for dimension, y, source in dimensions:
-            response = rcon.command(f"execute in {dimension} run forceload add 0 0 31 31")
+        def check_dimension(dimension, y, source, offset, glass):
+            end = offset + 31
+            response = rcon.command(f"execute in {dimension} run forceload add {offset} {offset} {end} {end}")
             if 'Unknown' in response or 'Incorrect' in response:
                 raise RuntimeError("Failed to load " + dimension)
             deadline = time.monotonic() + 90
             marker = "GLASS_WORLD_READY"
+            block = f"bolishijie:terrain/{source}" if glass else f"minecraft:{source}"
+            x = offset + 8
+            heights = [40, 45, 50, 55, 60] if source == "end_stone" else [y]
             while True:
-                response = rcon.request(2, f"execute in {dimension} if loaded 8 {y} 8 "
-                                          f"if block 8 {y} 8 bolishijie:terrain/{source} run say {marker}")
-                if marker in response:
-                    print(f"[WORLD-SMOKE] {label}: {dimension} loaded with persistent glass terrain", flush=True)
+                responses = [rcon.request(2, f"execute in {dimension} if loaded {x} {height} {x} "
+                                           f"if block {x} {height} {x} {block} run say {marker}")
+                             for height in heights]
+                if any(marker in response for response in responses):
+                    print(f"[WORLD-SMOKE] {label}: {dimension} at {x},{x} verified {block}", flush=True)
                     break
                 if time.monotonic() > deadline:
-                    raise RuntimeError(f"{label}: glass terrain not loaded in {dimension}: {response}")
+                    raise RuntimeError(f"{label}: expected terrain {block} not loaded in {dimension}: {responses}")
                 time.sleep(1)
+        for dimension, y, source in dimensions:
+            check_dimension(dimension, y, source, 0, converted)
+            if expand:
+                check_dimension(dimension, y, source, 32, True)
         rcon.command("save-all flush")
         rcon.request(2, "stop")
         rcon.socket.close()
@@ -132,7 +151,9 @@ def main():
     session("create", password)
     assert (RUN / "smoke-world/level.dat").is_file()
     session("reload", password)
-    print("[WORLD-SMOKE] PASS: production JAR created, saved and reloaded all three dimensions", flush=True)
+    session("create-before-install", password, "preexisting-world", with_mod=False, converted=False)
+    session("load-existing-after-install", password, "preexisting-world", converted=False, expand=True)
+    print("[WORLD-SMOKE] PASS: new worlds and pre-existing worlds load, save and generate terrain in all three dimensions", flush=True)
 
 
 if __name__ == "__main__":
